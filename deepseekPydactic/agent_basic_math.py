@@ -1,13 +1,12 @@
-from provider_model.deepseek_provide import model
-from pydantic import BaseModel
+from provider_model.deepseek_provide import model#ya no es obligatorio jsjsjs
 from pydantic_ai import Agent
 from system_promp.math_prompt import STATISTICS_SYSTEM_PROMPT  
 from tools.latex_tools import latex_generator_tool
 from outputs.math_output import StatisticsResult
 
-
+#usando provider apenas descubri que se puede usar sin provider jsjsj
 stats_agent = Agent(
-    model=model,
+    "deepseek:deepseek-chat",
     output_type=StatisticsResult,
     system_prompt=STATISTICS_SYSTEM_PROMPT,
     tools=[latex_generator_tool]

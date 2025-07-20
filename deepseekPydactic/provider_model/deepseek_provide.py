@@ -15,6 +15,7 @@ deepseek-chat
 deepseek-reseaoner 
 """
 model = OpenAIModel(
-    'deepseek-chat',
-    provider=DeepSeekProvider(api_key=config_context.deepseek_api_key),
+    "deepseek-chat",
+    provider=DeepSeekProvider(api_key=config_context.deepseek_api_key,),
+    
 )
