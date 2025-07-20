@@ -5,7 +5,7 @@ from system_promp.math_prompt import STATISTICS_SYSTEM_PROMPT
 from tools.latex_tools import latex_generator_tool
 from outputs.math_output import StatisticsResult
 
-# Creamos el agente estadistico
+
 stats_agent = Agent(
     model=model,
     output_type=StatisticsResult,
@@ -13,7 +13,6 @@ stats_agent = Agent(
     tools=[latex_generator_tool]
 )
 
-# Problema estadístico a resolver
 problem = """
 Se realizó un estudio comparando los puntajes de satisfacción (escala 1-10) entre dos grupos:
 - Grupo A (n=30): Media=7.2, DE=1.5
@@ -28,12 +27,10 @@ Realiza:
 
 result = stats_agent.run_sync(problem)
 
-
+#Imprimir resultados
 print("----- Análisis Estadístico -----")
 for step in result.output.analysis_steps:
     print(f"- {step}")
-
-
 
 print(f"\nConclusión Final: {result.output.final_conclusion}")
 print("\n----- Código LaTeX Generado -----")
@@ -41,3 +38,9 @@ print(result.output.latex_code[:500] + "...")
 
 print("\nDetalles de Ejecución:")
 print(result.output.details_execution)
+
+#Guardar el código LaTeX a un archivo
+latex_path = "output_latex.tex"
+with open(latex_path, "w", encoding="utf-8") as f:
+    f.write(result.output.latex_code)
+print(f"\nCódigo LaTeX guardado en: {latex_path}")
