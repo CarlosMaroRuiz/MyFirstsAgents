@@ -1,5 +1,8 @@
 from pydantic import BaseModel
 
-class ResultMath(BaseModel):
-    step_operation: list[str]  
-    result_final: str
+class StatisticsResult(BaseModel):
+    analysis_steps: list[str]
+    final_conclusion: str
+    latex_code: str
+
+    details_execution: str

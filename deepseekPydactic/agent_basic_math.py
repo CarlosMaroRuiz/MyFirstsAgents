@@ -1,18 +1,43 @@
 from provider_model.deepseek_provide import model
-from outputs.math_output import ResultMath
+from pydantic import BaseModel
 from pydantic_ai import Agent
-from system_promp.math_prompt import MATH_SYSTEM_PROMPT
+from system_promp.math_prompt import STATISTICS_SYSTEM_PROMPT  
+from tools.latex_tools import latex_generator_tool
+from outputs.math_output import StatisticsResult
 
-# Crear el agente con el modelo y el tipo de salida
-agent = Agent(model=model, output_type=ResultMath,system_prompt=MATH_SYSTEM_PROMPT)#usa una prompt base
+# Creamos el agente estadistico
+stats_agent = Agent(
+    model=model,
+    output_type=StatisticsResult,
+    system_prompt=STATISTICS_SYSTEM_PROMPT,
+    tools=[latex_generator_tool]
+)
+
+# Problema estadístico a resolver
+problem = """
+Se realizó un estudio comparando los puntajes de satisfacción (escala 1-10) entre dos grupos:
+- Grupo A (n=30): Media=7.2, DE=1.5
+- Grupo B (n=28): Media=5.8, DE=1.8
+
+Realiza:
+1. Prueba de hipótesis adecuada
+2. Análisis descriptivo
+3. Genera documento LaTeX con los resultados
+"""
 
 
-result = agent.run_sync('2x + x + 1 = 10')
+result = stats_agent.run_sync(problem)
 
-# Imprimir los pasos
-print("----- Pasos que siguieron -----")
-for step in result.output.step_operation:
-    print(step)
 
-# Imprimir el resultado final
-print(f"\nResultado final: {result.output.result_final}")
+print("----- Análisis Estadístico -----")
+for step in result.output.analysis_steps:
+    print(f"- {step}")
+
+
+
+print(f"\nConclusión Final: {result.output.final_conclusion}")
+print("\n----- Código LaTeX Generado -----")
+print(result.output.latex_code[:500] + "...")  
+
+print("\nDetalles de Ejecución:")
+print(result.output.details_execution)
